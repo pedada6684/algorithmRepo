@@ -20,21 +20,17 @@ public class Main {
             trees[i] = height;
             max = max < height ? height : max;
         }
-        while (!(max == min || max == min +1)){
+        while (max > min){
             long mid = (max+min)/2;
             long remain = cut(mid);
-            //System.out.println("max mid min res: "+ max + " " + mid +" "+min +" "+remain);
-            if (remain <= M){
+            if (remain < M){
                 max = mid;
             }else{
-                min = mid;
+                min = mid+1;
             }
         }
-        if (M == cut(max)){
-            System.out.println(max);
-        }else {
-            System.out.println(min);
-        }
+        System.out.println(max-1);
+        
     }
 
     private static long cut(long mid) {
