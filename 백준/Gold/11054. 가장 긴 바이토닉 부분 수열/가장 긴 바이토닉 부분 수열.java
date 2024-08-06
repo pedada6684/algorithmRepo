@@ -26,12 +26,8 @@ public class Main {
                 if (nums[j] < nums[i]){
                     dp1[i] = Math.max(dp1[i], dp1[j]+1);
                 }
-            }
-        }
-        for (int i = N-1; i >= 0; i--) {
-            for (int j = N-1; j > i; j--) {
-                if (nums[j] < nums[i]){
-                    dp2[i] = Math.max(dp2[i], dp2[j]+1);
+                if (nums[N-1-i] > nums[N-1-j]){
+                    dp2[N-1-i] = Math.max(dp2[N-1-i], dp2[N-1-j]+1);
                 }
             }
         }
