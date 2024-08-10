@@ -1,64 +1,69 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
     static String ans;
-    static int[] nums;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
+        int[] nums = new int[N];
+        ArrayList<Node> dp = new ArrayList<>();
         ans = "";
-        nums = new int[N];
-        Node[] dp = new Node[N];
-        for (int i = 0; i < N; i++) {
-            dp[i] = new Node(null, 1, i);
-        }
 
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             nums[i] = Integer.parseInt(st.nextToken());
         }
-        int maxlen = 1;
-        Node maxNode = dp[0];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < i; j++) {
-                if (nums[j] < nums[i]){
-                    if (dp[i].value < dp[j].value+1){
-                        dp[i].parent = dp[j];
-                        dp[i].value = dp[j].value+1;
-                        dp[i].idx = i;
-                        if (maxlen < dp[i].value){
-                            maxlen = dp[i].value;
-                            maxNode = dp[i];
-                        }
+        search: for (int input : nums) {
+            if (dp.isEmpty()){
+                dp.add(new Node(null, input));
+            }else{
+                if (dp.get(dp.size()-1).value < input){
+                    dp.add(new Node(dp.get(dp.size()-1), input));
+                }
+                int start = 0;
+                int end = dp.size();
+                while (start != end){
+                    int mid = (start + end)/2;
+                    if (dp.get(mid).value < input){
+                        start = mid + 1;
+                    }else{
+                        end = mid;
+                    }
+                }
+                if (dp.get(end).value != input){
+                    if (end == 0){
+                        dp.set(end, new Node(null, input));
+                    }else{
+                        dp.set(end, new Node(dp.get(end-1), input));
                     }
                 }
             }
         }
-        dfs(maxNode);
-        System.out.println(maxlen);
+        System.out.println(dp.size());
+        Node node = dp.get(dp.size() - 1);
+        dfs(node);
         System.out.println(ans.trim());
     }
 
-    private static void dfs(Node now) {
-        if (now.parent != null){
-            dfs(now.parent);
+    private static void dfs(Node node) {
+        if (node.parent != null){
+            dfs(node.parent);
         }
-        ans += nums[now.idx]+" ";
+        ans += node.value + " ";
     }
 
     public static class Node{
         Node parent;
         int value;
-        int idx;
 
-        public Node(Node parent, int value, int idx) {
+        public Node(Node parent, int value) {
             this.parent = parent;
             this.value = value;
-            this.idx = idx;
         }
     }
 }
