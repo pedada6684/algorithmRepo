@@ -19,7 +19,6 @@ public class Main {
         }
         cross += pointArr[N-1][0]*pointArr[0][1] - pointArr[N-1][1]*pointArr[0][0];
         Double ans = Math.abs(cross)/2.0;
-        ans = Math.round(ans*10)/10.0;
         System.out.println(String.format("%.1f",ans));
     }
 }
