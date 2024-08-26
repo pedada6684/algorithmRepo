@@ -27,22 +27,18 @@ public class Main {
         for (int i = 0; i < N; i++) {
             memoryAndPrice[i][0] = Integer.parseInt(st.nextToken());
         }
+        int zeroPriceCnt = 0;
+        int savedMemory = 0;
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             memoryAndPrice[i][1] = Integer.parseInt(st.nextToken());
-        }
-        Arrays.sort(memoryAndPrice, (a, b) -> a[1] - b[1]);
-
-        int zeroPriceCnt = 0;
-        int savedMemory = 0;
-        for (int[] ele : memoryAndPrice) {
-            if (ele[1] == 0) {
+            if (memoryAndPrice[i][1] == 0){
                 zeroPriceCnt++;
-                savedMemory += ele[0];
-            } else {
-                break;
+                savedMemory += memoryAndPrice[i][0];
             }
         }
+        Arrays.sort(memoryAndPrice, (a, b) -> a[1] - b[1]);
+        
         if (M <= savedMemory) {
             System.out.println(0);
         } else {
