@@ -45,13 +45,12 @@ public class Main {
 		pq.add(new Vertex(1, dist[1]));
 		
 		long ans = 0;
-        int cnt  = 0;
 		while (!pq.isEmpty()) {
 			Vertex nowV = pq.poll();
 			if (visited[nowV.e]) continue;
 			visited[nowV.e] = true;
 			ans += nowV.w;
-            if (++cnt == V) break;
+			
 			for (Vertex nextV : adjlst[nowV.e]) {
 				int e = nextV.e;
 				int w = nextV.w;
