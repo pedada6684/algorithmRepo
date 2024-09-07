@@ -39,7 +39,6 @@ public class Main {
             int c = arr[0];
             int d = arr[1] + parent.distance;
             Node child = new Node(parent, c, d);
-            parent.children.add(child);
             second = Math.max(second, dfs(child));
             if (second > first){
                 int tmp = first;
@@ -54,7 +53,6 @@ public class Main {
 
     private static class Node {
         Node parent;
-        List<Node> children = new ArrayList<>();
         int value;
         int distance;
 
