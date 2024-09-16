@@ -12,71 +12,58 @@ public class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
-        int[] card = new int[M];
+        int[] minsuCard = new int[M];
         //카드 입력, 정렬
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < M; i++) {
-            card[i] = Integer.parseInt(st.nextToken());
+            minsuCard[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(card);
+        Arrays.sort(minsuCard);
 
-        //라운드 입력
-        Integer[] question = new Integer[K];
+        //철수카드 입력
+        Integer[] chalsuCard = new Integer[K];
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < K; i++) {
-            question[i] = Integer.parseInt(st.nextToken());
+            chalsuCard[i] = Integer.parseInt(st.nextToken());
         }
-        //라운드 복사, 중복제거, 정렬
-        List<Integer> sortedQuestion = new ArrayList<>(new HashSet<>(Arrays.asList(question)));
-        Collections.sort(sortedQuestion);
+        //철수카드 복사, 중복제거, 정렬
+        List<Integer> sortedChalsuCard = new ArrayList<>(new HashSet<>(Arrays.asList(chalsuCard)));
+        Collections.sort(sortedChalsuCard);
 
-        //라운드 별 queue map
-        Map<Integer, Queue<Integer>> map = new HashMap<>();
+        //찰수카드 별 queue map
+        Map<Integer, Queue<Integer>> queueMap = new HashMap<>();
 
-        //라운드 분할
-        int idx = 0;
+        //카드별 queue 할당
+        int minsuCardIdx = 0;
         parent = new HashMap<>();
-        for (int i = 0; i < sortedQuestion.size() - 1; i++) {
-            Integer now = sortedQuestion.get(i);
-            Integer next = sortedQuestion.get(i + 1);
-            while (card[idx] <= now) idx++; //첫번째 구간까지 건너뛰기 /이분탐색으로 최적화 가능
+        for (int i = 0; i < sortedChalsuCard.size(); i++) {
+            Integer now = sortedChalsuCard.get(i);
+            Integer next = i+1 < sortedChalsuCard.size()?
+                    sortedChalsuCard.get(i + 1) : Integer.MAX_VALUE;
+            while (minsuCard[minsuCardIdx] <= now) minsuCardIdx++; //첫번째 구간까지 건너뛰기 /이분탐색으로 최적화 가능
 
             Queue<Integer> queue = new LinkedList<>();//큐 생성, 삽입
-            while (idx < card.length && card[idx] <= next) {
-                queue.add(card[idx++]);
+            while (minsuCardIdx < minsuCard.length && minsuCard[minsuCardIdx] <= next) {
+                queue.add(minsuCard[minsuCardIdx++]);
             }
 
-            map.put(i, queue);
+            queueMap.put(i, queue);
             parent.put(i,i);
         }
 
-        //마지막 구간 추가
-        Queue<Integer> queue = new LinkedList<>();
-        int lastIdx = sortedQuestion.size() - 1;
-        while (card[idx] <= sortedQuestion.get(lastIdx)) idx++; //첫번째 구간까지 건너뛰기 /이분탐색으로 최적화 가능
-        while (idx < card.length) {
-            queue.add(card[idx++]);
-        }
-        map.put(lastIdx, queue);
-        parent.put(lastIdx, lastIdx);
-
         //출력
-        for (Integer q : question) {
-            int idxQ = Collections.binarySearch(sortedQuestion, q);
-            queue = map.get(find(idxQ));
+        for (Integer cc : chalsuCard) {
+            int sortedIdx = Collections.binarySearch(sortedChalsuCard, cc);
+            Queue<Integer> queue = queueMap.get(find(sortedIdx));
             while (queue.isEmpty()){ // 큐가 빈경우 다음 구간으로 넘어감
-                union(idxQ, idxQ+1);
-                queue = map.get(find(idxQ));
-                idxQ = find(idxQ);
+                parent.put(find(sortedIdx), find(sortedIdx+1));
+                queue = queueMap.get(find(sortedIdx));
+                sortedIdx = find(sortedIdx);
             }
             sb.append(queue.poll()+"\n");
         }
-        System.out.println(sb.toString().trim());
-    }
 
-    private static void union(int f, int b) {
-        if (find(f) == find(b))return;
-        parent.put(find(f), find(b));
+        System.out.println(sb.toString().trim());
     }
 
     private static int find(Integer idx) {
