@@ -25,29 +25,24 @@ public class Main {
             Planet aP = planetArr[i];
             Planet bP = planetArr[i+1];
             edges.add(new Edge(aP.value, bP.value, Math.abs(aP.x-bP.x)));
-            edges.add(new Edge(bP.value, aP.value, Math.abs(aP.x-bP.x)));
         }
         Arrays.sort(planetArr, (a,b) -> a.y - b.y);
         for (int i = 0; i < N-1; i++) {
             Planet aP = planetArr[i];
             Planet bP = planetArr[i+1];
             edges.add(new Edge(aP.value, bP.value, Math.abs(aP.y-bP.y)));
-            edges.add(new Edge(bP.value, aP.value, Math.abs(aP.y-bP.y)));
         }
         Arrays.sort(planetArr, (a,b) -> a.z - b.z);
         for (int i = 0; i < N-1; i++) {
             Planet aP = planetArr[i];
             Planet bP = planetArr[i+1];
             edges.add(new Edge(aP.value, bP.value, Math.abs(aP.z-bP.z)));
-            edges.add(new Edge(bP.value, aP.value, Math.abs(aP.z-bP.z)));
         }
         edges.sort((a,b) -> a.d -b.d);
         int ans = 0;
         for (Edge edge : edges) {
-            int s = edge.s;
-            int e = edge.e;
-            int parentS = find(s);
-            int parentE = find(e);
+            int parentS = find(edge.s);
+            int parentE = find(edge.e);
             if (parentS != parentE){
                 parent[parentE] = parentS;
                 ans += edge.d;
