@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -31,9 +30,6 @@ public class Main {
                 continue;
             }
             for (int d = 0; d < 4; d++) {
-
-//                if (d > 1) continue;
-
                     q.add(move(now, d));
             }
         }
@@ -51,88 +47,52 @@ public class Main {
     private static State move(State now, int d) {
         int max = now.max;
         int[][] map = clone(now.map);
-//        System.out.println("start "+ d);
-//        printMap(map);
-//        System.out.println();
         map = drop(map, d);
-        if (d<2){
-            for (int i = 0; i < map.length; i++) {
-                for (int j = 0; j < map.length; j++) {//합치기
-                    int nexti = i+dx[d];
-                    int nextj = j+dy[d];
-                    if (0<= nexti && nexti < map.length && 0<= nextj && nextj < map.length && map[i][j] == map[nexti][nextj]){
-                        map[nexti][nextj] *= 2;
-                        map[i][j] = 0;
-                        max = Math.max(max, map[nexti][nextj]);
-                    }
-                }
-            }
-        }else{
-            for (int i = map.length-1; i >= 0; i--) {
-                for (int j = map.length-1; j >= 0; j--) {
-                    int nexti = i+dx[d];
-                    int nextj = j+dy[d];
-                    if (0<= nexti && nexti < map.length && 0<= nextj && nextj < map.length && map[i][j] == map[nexti][nextj]){
-                        map[nexti][nextj] *= 2;
-                        map[i][j] = 0;
-                        max = Math.max(max, map[nexti][nextj]);
-                    }
+        
+        int startI = (d < 2) ? 0 : map.length - 1;
+        int endI = (d < 2) ? map.length : -1;
+        int stepI = (d < 2) ? 1 : -1;
+        int startJ = (d < 2) ? 0 : map.length - 1;
+        int endJ = (d < 2) ? map.length : -1;
+        int stepJ = (d < 2) ? 1 : -1;
+        
+        for (int i = startI; i != endI; i += stepI) {
+            for (int j = startJ; j != endJ; j += stepJ) {//합치기
+                int nexti = i+dx[d];
+                int nextj = j+dy[d];
+                if (0<= nexti && nexti < map.length && 0<= nextj && nextj < map.length && map[i][j] == map[nexti][nextj]){
+                    map[nexti][nextj] *= 2;
+                    map[i][j] = 0;
+                    max = Math.max(max, map[nexti][nextj]);
                 }
             }
         }
         map = drop(map, d);
-//        System.out.println("end "+ d);
-//        printMap(map);
-//        System.out.println("======");
-//        printMap(now.map);
-//        System.out.println();
         return new State(map, now.cnt+1, max);
     }
 
-    private static void printMap(int[][] map) {
-        for (int[] ints : map) {
-            for (int anInt : ints) {
-                System.out.print(anInt+" ");
-            }
-            System.out.println();
-        }
-    }
-
     private static int[][] drop(int[][] map, int d) {
-        if (d<2){
-            for (int i = 0; i < map.length; i++) {
-                for (int j = 0; j < map.length; j++) {
-                    int nowi = i;
-                    int nowj = j;
-                    while (true){
-                        int nexti = nowi+dx[d];
-                        int nextj = nowj+dy[d];
-                        if (0<= nexti && nexti < map.length && 0<= nextj && nextj < map.length && map[nexti][nextj] == 0){
-                            map[nexti][nextj] = map[nowi][nowj];
-                            map[nowi][nowj] = 0;
-                            nowi = nexti;
-                            nowj = nextj;
-                            continue;
-                        }
-                        break;
-                    }
-                }
-            }
-        }else{
-            for (int i = map.length-1; i >= 0; i--) {
-                for (int j = map.length-1; j >= 0; j--) {
-                    int nowi = i;
-                    int nowj = j;
-                    while (true){
-                        int nexti = nowi+dx[d];
-                        int nextj = nowj+dy[d];
-                        if (0<= nexti && nexti < map.length && 0<= nextj && nextj < map.length && map[nexti][nextj] == 0){
-                            map[nexti][nextj] = map[nowi][nowj];
-                            map[nowi][nowj] = 0;
-                            nowi = nexti;
-                            nowj = nextj;
-                            continue;
-                        }
+        int startI = (d < 2) ? 0 : map.length - 1;
+        int endI = (d < 2) ? map.length : -1;
+        int stepI = (d < 2) ? 1 : -1;
+
+        int startJ = (d < 2) ? 0 : map.length - 1;
+        int endJ = (d < 2) ? map.length : -1;
+        int stepJ = (d < 2) ? 1 : -1;
+
+        for (int i = startI; i != endI; i += stepI) {
+            for (int j = startJ; j != endJ; j += stepJ) {
+                int nowi = i;
+                int nowj = j;
+                while (true) {
+                    int nexti = nowi + dx[d];
+                    int nextj = nowj + dy[d];
+                    if (0 <= nexti && nexti < map.length && 0 <= nextj && nextj < map.length && map[nexti][nextj] == 0) {
+                        map[nexti][nextj] = map[nowi][nowj];
+                        map[nowi][nowj] = 0;
+                        nowi = nexti;
+                        nowj = nextj;
+                    } else {
                         break;
                     }
                 }
@@ -153,10 +113,3 @@ public class Main {
         }
     }
 }
-/*
-4
-2 0 2 0
-0 0 2 2
-0 0 0 0
-0 0 0 0
- */
