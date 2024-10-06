@@ -74,15 +74,4 @@ public class Main {
             }
         }
     }
-
-    private static void print(int[][] map) {
-        System.out.println("======");
-        for (int[] row : map) {
-            for (int i : row) {
-                System.out.print(i+" ");
-            }
-            System.out.println();
-        }
-        System.out.println("======");
-    }
 }
