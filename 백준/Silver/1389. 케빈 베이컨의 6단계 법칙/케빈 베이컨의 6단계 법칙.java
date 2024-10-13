@@ -22,15 +22,12 @@ public class Main {
             distance[a][b] = 1;
             distance[b][a] = 1;
         }
-        for (int x = 0; x < 2; x++) {
+        for (int k = 0; k < N; k++) {
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-                    if (i == j) continue;
-                    for (int k = 0; k < N; k++) {
-                        if (j == k) continue;
-                        if (distance[i][k] > distance[i][j] + distance[j][k]) {
-                            distance[i][k] = distance[i][j] + distance[j][k];
-                        }
+                    if (distance[i][j] > distance[i][k] + distance[k][j]) {
+                        distance[i][j] = distance[i][k] + distance[k][j];
+//                        distance[j][i] = distance[i][j];
                     }
                 }
             }
