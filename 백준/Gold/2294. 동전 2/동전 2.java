@@ -18,7 +18,6 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             coins[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(coins);
         Arrays.fill(memo, MAXV);
         memo[0] = 0;
         for (int i = N-1; i >= 0; i--) {
