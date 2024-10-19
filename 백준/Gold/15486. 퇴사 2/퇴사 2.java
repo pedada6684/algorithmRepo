@@ -27,11 +27,10 @@ public class Main {
         for (int i = N-1; i >= 0; i--) {
             int time = arr[i][0];
             int money = arr[i][1];
-            long doNot = i+1 < N+1? memo[i+1] : -1*maxv;
-            long doWork = i+time < N+1 ? memo[i+time] : -1*maxv;
-            memo[i] = Math.max(doNot, doWork+money);
+            long rest = i+1 < N+1? memo[i+1] : -1*maxv;
+            long work = i+time < N+1 ? memo[i+time] : -1*maxv;
+            memo[i] = Math.max(rest, work+money);
         }
-
         System.out.println(memo[0]);
     }
 }
