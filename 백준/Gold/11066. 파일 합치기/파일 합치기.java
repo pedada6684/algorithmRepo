@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static final int maxv = 500*1000000;
+    static final int maxv = 500*10000*5;
     static int[][] memo;
     static int[][] memo2;
     static int[] arr;
