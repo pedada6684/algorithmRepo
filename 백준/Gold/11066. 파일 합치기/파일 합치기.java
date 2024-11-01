@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main{
-    static final int maxv = 500*100000;
+public class Main {
+    static final int maxv = 500*1000000;
     static int[][] memo;
     static int[][] memo2;
     static int[] arr;
@@ -20,22 +20,26 @@ public class Main{
             int N = Integer.parseInt(st.nextToken());
             arr = new int[N+1];
             memo = new int[N][N];
+            for (int[] ints : memo) Arrays.fill(ints, maxv);
             st = new StringTokenizer(br.readLine());
             for (int i = 1; i < N+1; i++) {
-                arr[i] = arr[i-1] + Integer.parseInt(st.nextToken());
+                arr[i] = Integer.parseInt(st.nextToken()) + arr[i-1];
             }
-
-            for (int i = 1; i < N; i++) {//끝점
-                for (int s = 0 ; s+i < N; s++) {//시작점
-                    int e = s+i;
-                    memo[s][e] = maxv;
-                    for (int m = 0; s+m < e; m++) {//divide
-                        memo[s][e] = Math.min(memo[s][e], memo[s][s+m] + memo[s+m+1][e] + arr[e+1]-arr[s]);
-                    }
-                }
-            }
-            sb.append(memo[0][N-1]+"\n");
+            sb.append(dp(0,N-1)+"\n");
         }
         System.out.println(sb.toString().trim());
+    }
+
+    private static int dp(int s, int e) {
+        if (s == e){
+            return memo[s][e] = 0;
+        }if (memo[s][e] != maxv){
+            return memo[s][e];
+        }
+        int minv = maxv;
+        for (int i = s; i < e; i++) {
+            minv = Math.min(minv, dp(s,i) + dp(i+1,e) + arr[e+1] - arr[s]);
+        }
+        return memo[s][e] = minv;
     }
 }
