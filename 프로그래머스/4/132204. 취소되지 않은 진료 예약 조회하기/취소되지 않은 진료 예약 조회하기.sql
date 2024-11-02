@@ -3,9 +3,10 @@ from APPOINTMENT as a
 join PATIENT as p on a.PT_NO = p.PT_NO
 join DOCTOR as d on a.MDDR_ID = d.DR_ID
 
-where year(a.APNT_YMD) = 2022
-and month(a.APNT_YMD) = 4
-and day(a.APNT_YMD) = 13
+where date_format(a.APNT_YMD, '%Y-%m-%d') = '2022-04-13'
+# year(a.APNT_YMD) = 2022
+# and month(a.APNT_YMD) = 4
+# and day(a.APNT_YMD) = 13
 and a.MCDP_CD = 'CS'
 and a.APNT_CNCL_YN = 'N'
 
