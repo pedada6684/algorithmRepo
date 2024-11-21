@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] targets) {
-        Arrays.sort(targets, (a,b) -> a[1]-b[1]);
+        Arrays.sort(targets, (a,b) -> a[1]!=b[1] ? a[1]-b[1] : a[0]-b[0]);
         boolean[] isDown = new boolean[targets.length];
         
         int answer = 0;
