@@ -23,12 +23,15 @@ public class Main {
                 arr[i] = new int[] {a,b};
             }
             Arrays.sort(arr, Comparator.comparing(a -> a[0]));
-            Stack<Integer> stack = new Stack<>();
-            stack.push(arr[0][1]);
-            for (int[] i : arr) {
-                if (stack.peek()>i[1]) stack.push(i[1]);
+            int min = Integer.MAX_VALUE;
+            int cnt = 0;
+            for (int[] man : arr) {
+                if (man[1]<min){
+                    cnt++;
+                    min = man[1];
+                }
             }
-            sb.append(stack.size()+"\n");
+            sb.append(cnt+"\n");
         }
         System.out.println(sb.toString().trim());
     }
