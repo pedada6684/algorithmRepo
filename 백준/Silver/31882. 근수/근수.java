@@ -11,7 +11,7 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         String s = br.readLine();
-        String[] split = s.split("[^2]");
+        String[] split = s.split("[^2]+");
         long score = 0;
         for (String string : split) {
             int length = string.length();
