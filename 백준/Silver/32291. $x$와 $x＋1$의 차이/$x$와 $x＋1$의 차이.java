@@ -39,7 +39,7 @@ public class Main {
                 pidx++;
             }
         }
-        if (pidx == primes.size() && N != 1){
+        if (N != 1){
             list.add(N);
         }
         occur = new boolean[list.size()];
