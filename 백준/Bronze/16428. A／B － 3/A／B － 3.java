@@ -10,7 +10,17 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         BigInteger a = new BigInteger(st.nextToken());
         BigInteger b = new BigInteger(st.nextToken());
-        System.out.println(a.divide(b));
-        System.out.println(a.mod(b));
+        BigInteger div = a.divide(b);
+        BigInteger mod = a.remainder(b);
+        if (mod.compareTo(BigInteger.ZERO)<0){
+            mod = mod.add(b.abs());
+            if (b.compareTo(BigInteger.ZERO) < 0) {
+                div = div.add(BigInteger.ONE);
+            }else{
+                div = div.subtract(BigInteger.ONE);
+            }
+        }
+        System.out.println(div);
+        System.out.println(mod);
     }
 }
