@@ -4,52 +4,46 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str = br.readLine();
-        Stack<Character> stack = new Stack<>();
-        Map<Character, Integer> priority = new HashMap<>();
-        priority.put('(', 4);
-        priority.put('*', 3);
-        priority.put('/', 3);
-        priority.put('+', 2);
-        priority.put('-', 2);
-        priority.put(')', 1);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            char now = str.charAt(i);
-//            System.out.println("now: "+ now);
-            if (priority.containsKey(now)){ // 부호
-                if (stack.isEmpty()){
-                    stack.push(now);
-                }else{
-                    if (now == '('){
-                        stack.add(now);
-                    }else if (now == ')'){
-                        while (stack.peek() != '('){
-                            sb.append(stack.pop());
-                        }
-                        stack.pop();
-                    }else{
-                        while (!stack.isEmpty()
-                                && priority.get(stack.peek()) >= priority.get(now)
-                                && stack.peek() != '(') { //스택이 우선순위가 높은 경우
-                            sb.append(stack.pop());
-                        }
-                        stack.add(now);
-                    }
-                }
-            }else{
-//                System.out.println("now: "+ now);
-                sb.append(now);
+    
+public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringBuilder sb = new StringBuilder();
+
+    String str = br.readLine();
+
+    Map<Character, Integer> map = new HashMap<>();
+    map.put('(', -1);
+    map.put('+', 0);
+    map.put('-', 0);
+    map.put('*', 1);
+    map.put('/', 1);
+
+    Stack<Character> stack = new Stack<>();
+    for (int i = 0; i < str.length(); i++) {
+        if (str.charAt(i) >= 'A' && str.charAt(i) <= 'Z') {
+            sb.append(str.charAt(i));
+        } else if (str.charAt(i) == '(') {
+            stack.push(str.charAt(i));
+        } else if (str.charAt(i) == ')') {
+            while (!stack.isEmpty() && stack.peek() != '(') {
+                sb.append(stack.pop());
             }
+            stack.pop();
+        } else  {
+            while (!stack.isEmpty() && stack.peek() != '(' && map.get(stack.peek()) >= map.get(str.charAt(i))) {
+                sb.append(stack.pop());
+            }
+            stack.push(str.charAt(i));
         }
-        while (!stack.isEmpty()){
-            sb.append(stack.pop());
-        }
-        System.out.println(sb);
     }
+
+    while (!stack.isEmpty()) {
+        sb.append(stack.pop());
+    }
+
+    System.out.println(sb);
+}
+
 }
