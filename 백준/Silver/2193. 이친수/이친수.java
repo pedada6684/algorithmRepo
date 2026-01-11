@@ -8,14 +8,14 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
-        long[] memo = new long[N+1];
-        long[] one = new long[N+1];
-        memo[1] = 1;
-        one[1] = 1;
-        for (int i = 2; i <= N; i++) {
-            memo[i] = memo[i-1]*2-one[i-1];
-            one[i] = memo[i-1]-one[i-1];
+        long a = 1;
+        long b = 1;
+        long tmp = 0;
+        for (int i = 3; i <= N; i++) {
+            tmp = a + b;
+            a = b;
+            b = tmp;
         }
-        System.out.println(memo[N]);
+        System.out.println(b);
     }
 }
