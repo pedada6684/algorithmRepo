@@ -46,7 +46,6 @@ public class Main {
         int dpFor = NEG;
         for (int i = 0; i < n + 1; i++) {
             int prev = dp(i - 2, m - 1);
-            if (prev == NEG) continue;
             dpFor = Math.max(dpFor, prev + sumArr[n + 1] - sumArr[i]);
         }
 
