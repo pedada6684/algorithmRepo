@@ -33,8 +33,8 @@ public class Main {
         int e = Integer.parseInt(st.nextToken());
 
         int[] distance = new int[N+1];
-        distance[s] = 0;
         Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[s] = 0;
 
         PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
         pq.add(new int[] {s, 0});
@@ -45,10 +45,9 @@ public class Main {
                 System.out.println(now[1]);
                 return;
             }
-            if (distance[now[0]] != Integer.MAX_VALUE){
+            if(now[1] > distance[now[0]]){
                 continue;
             }
-            distance[now[0]] = now[1];
 
             List<Edge> edgeList = map.get(now[0]);
             if(edgeList == null){
@@ -56,7 +55,11 @@ public class Main {
             }
 
             for (Edge edge : edgeList) {
-                pq.add(new int[] {edge.e, edge.d+now[1]});
+                int nd = distance[now[0]] + edge.d;
+                if(nd < distance[edge.e]){
+                    pq.add(new int[] {edge.e, edge.d+now[1]});
+                    distance[edge.e] = nd;
+                }
             }
         }
     }
