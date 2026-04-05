@@ -1,59 +1,69 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        long[][] arr = new long[N][4];
-        for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < 4; j++) {
-                arr[i][j] = Long.parseLong(st.nextToken());
+        StringTokenizer st;
+
+        int n = Integer.parseInt(br.readLine());
+
+        int[] arr1 = new int[n];
+        int[] arr2 = new int[n];
+        int[] arr3 = new int[n];
+        int[] arr4 = new int[n];
+
+        for(int i=0; i<n; i++){
+            st = new StringTokenizer(br.readLine());
+            arr1[i]   = Integer.parseInt(st.nextToken());
+            arr2[i]   = Integer.parseInt(st.nextToken());
+            arr3[i]   = Integer.parseInt(st.nextToken());
+            arr4[i]   = Integer.parseInt(st.nextToken());
+        }
+
+        int[] arr12 = new int[n*n];
+        int[] arr34 = new int[n*n];
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                arr12[i*n+j] = arr1[i] + arr2[j];
+                arr34[i*n+j] = arr3[i] + arr4[j];
             }
         }
 
-        long[] ab = new long[N*N];
-        long[] cd = new long[N*N];
-        int idx = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                ab[idx] = arr[i][0] + arr[j][1];
-                cd[idx] = arr[i][2] + arr[j][3];
-                idx++;
-            }
-        }
-        Arrays.sort(ab);
-        Arrays.sort(cd);
+        Arrays.sort(arr12);
+        Arrays.sort(arr34);
 
-        long ans = 0L;
+        long cnt = 0;
         int left = 0;
-        int right = cd.length - 1;
+        int right = n*n-1;
+        while(left < n*n && right >= 0){
+            int sum = arr12[left] + arr34[right];
 
-        while (left < ab.length && 0<= right) {
-            Long a = ab[left];
-            Long b = cd[right];
-            long now = a + b;
-            if (now == 0){
-                int acnt = 0;
-                while (left+acnt < ab.length && a == ab[left+acnt]){
-                    acnt++;
+            if(sum == 0){
+                int a = arr12[left];
+                int b = arr34[right];
+
+                int aCnt = 0, bCnt = 0;
+                while(left < n*n && arr12[left] == a) {
+                    aCnt++;
+                    left++;
                 }
-                int bcnt = 0;
-                while (0 <= right-bcnt && b == cd[right-bcnt]){
-                    bcnt++;
+                while(right >= 0 && arr34[right] == b){
+                    bCnt++;
+                    right--;
                 }
-                ans += (long) acnt * bcnt;
-                left += acnt;
-                right -= bcnt;
-            } else if (now > 0) {
+
+                cnt += (long)aCnt * bCnt;
+            } else if(sum > 0){
                 right--;
-            }else{
+            } else{
                 left++;
             }
         }
-        System.out.println(ans);
+
+        System.out.println(cnt);
     }
 }
